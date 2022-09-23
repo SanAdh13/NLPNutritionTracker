@@ -1,11 +1,8 @@
 pip 
 setuptools 
 wheel
-spacy
 speechrecognition
 pyaudio
-pyttsx3
 pandas
 torch
 torchaudio
-flask
