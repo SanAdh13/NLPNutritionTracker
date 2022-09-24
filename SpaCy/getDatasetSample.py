@@ -47,8 +47,20 @@ def dataset():
    #shuffled list to reduce the bias in training
    x = pd.concat(lists).sample(frac=1)
 
-   ################
+   ################yelp
    yelpSample = yelpData.sample(x.size)
 
+
+   
    return x,yelpSample
 
+
+# if __name__ == "__main__":
+#     x,y = dataset()
+
+         
+#     print(x.shape)
+#     print(y.shape)
+
+#     print(x.head())
+#     print(y.head())
