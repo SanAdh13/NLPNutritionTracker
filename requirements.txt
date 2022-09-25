@@ -6,3 +6,4 @@ pyaudio
 pandas
 torch
 torchaudio
+tqdm

@@ -10,15 +10,6 @@ def createDB():
     return 0
 
 """
-Any texts that needs to be added to 'training data' table using this function
-
-Possibly i will create an option in the app if the user would like to improve accuracy
-    This method will add more training data which should help impoving model
-"""
-def addTextToTrainingData():
-    return 0
-
-"""
     A table for the food stuff to add for the user 
     eg. 
     DATE    | FOODTYPE  | FOODITEM | QUANTITY

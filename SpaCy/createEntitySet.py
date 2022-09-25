@@ -1,7 +1,7 @@
 
 import random
 import re
-import getDatasetSample as dataset
+import usdaSample as dataset
 
 ''' we need to create the entity set for training the ner'''
 
@@ -14,17 +14,12 @@ import getDatasetSample as dataset
 
     "text", [entities:{startingIndex,endingIndex,"FOOD"},{startingIndex,endingIndex,"FOOD"}] 
     
+    or 
+
+    "text", [{startingIndex,endingIndex,"FOOD"},{startingIndex,endingIndex,"FOOD"}]
+
+    i=0 will be the text, i=1 the entities 
 '''
-
-
-def writeEntityToFile(Entities):
-    
-    # TODO: write the entities to file 
-    # will be used for the trainingthe NER  
-    return 0
-
-
-
 
 def entity():
     #TODO: add more values to the template
@@ -36,7 +31,7 @@ def entity():
 
     foodEntity = []
 
-    usda,_ = dataset.dataset()
+    usda = dataset.dataset()
 
     entityCount = usda.size -1 
 
@@ -57,17 +52,10 @@ def entity():
             entities.append((matchSpan[0],matchSpan[1],"FOOD"))
             entityCount-= 1 
 
-        foodEntity.append((pickedTemplate,{"entities":entities}))    
+        # foodEntity.append((pickedTemplate,{"entities":entities}))  
+        foodEntity.append((pickedTemplate,entities))
+    return foodEntity
 
-    writeEntityToFile(foodEntity) # the food entity written to file 
 
-
-if __name__ == "__main__":
-    x = entity()
-
-    print(len(x))
-    for i in x: 
-        # print(i[1])  # index 0 is the text line and index 1 is the entity annotation
-        print("")
 
 

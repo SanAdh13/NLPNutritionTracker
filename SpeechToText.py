@@ -33,7 +33,7 @@ def speech(r,mic):
 		if(userConfirm.lower() == "yes" or userConfirm.lower() == "y"):
 			print("Success")
 			
-			# # #db.addTextToTrainingData(text) # # # 
+			#TODO: The speech is passed to the spacy model to extract
 			
 		else:
 			print("Try again")

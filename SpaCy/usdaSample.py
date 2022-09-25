@@ -1,6 +1,5 @@
 import pandas as pd
 
-locYelp = "SpaCy/datasets/pos_reviews.csv"
 locUSDA = "SpaCy/datasets/food.csv"
 
 def dataset():
@@ -23,11 +22,9 @@ def dataset():
 
       return clean
 
-   yelpDF = pd.read_csv(locYelp)
    usdaDF = pd.read_csv(locUSDA)
-   ###########################USDA
    usdaData = usdaDF.description 
-   yelpData = yelpDF.text
+
 
    cleanedData = cleanup(usdaData)
 
@@ -37,22 +34,17 @@ def dataset():
    foodFour = cleanedData[cleanedData.str.split().apply(len) == 4]
 
 
-   foodOne = foodOne.sample(n=50)
-   foodtwo = foodtwo.sample(n=30)
-   foodThree = foodThree.sample(n=20)
-   foodFour = foodFour.sample(n=15)
+   foodOne = foodOne.sample(n=150)
+   foodtwo = foodtwo.sample(n=100)
+   foodThree = foodThree.sample(n=50)
+   foodFour = foodFour.sample(n=25)
 
    lists = [foodOne,foodtwo,foodThree,foodFour]
 
-   #shuffled list to reduce the bias in training
-   x = pd.concat(lists).sample(frac=1)
-
-   ################yelp
-   yelpSample = yelpData.sample(x.size)
-
-
+   #combine and shuffled list for final sample and reduce the bias in training
+   x = pd.concat(lists).sample(frac=1)   
    
-   return x,yelpSample
+   return x
 
 
 # if __name__ == "__main__":
