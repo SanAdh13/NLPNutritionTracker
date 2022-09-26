@@ -26,7 +26,12 @@ def entity():
     templates = [ 
         " Today i ate {} ",
         "For lunch i had {} , {} and {} ",
-        " I decided to have a portion of {} ,and some {} "
+        " I decided to have a portion of {} ,and some {} ",
+        "I had {} and {} for breakfast",
+        "for breakfast i had {}, for lunch i had {},{} and for dinner i'll eat {} and {} "
+        "I only had {} today", 
+        "For supper i ate two {} with one {} and half of {}",
+        "I shared {} with a friend"
     ]
 
     foodEntity = []
@@ -55,6 +60,8 @@ def entity():
         # foodEntity.append((pickedTemplate,{"entities":entities}))  
         foodEntity.append((pickedTemplate,entities))
     return foodEntity
+
+
 
 
 

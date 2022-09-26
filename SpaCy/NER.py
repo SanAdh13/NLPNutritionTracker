@@ -7,8 +7,8 @@ from tqdm import tqdm
 import spacy
 from spacy.tokens import DocBin
 
-spacy.prefer_GPU()
-nlp = spacy.load("en_core_web_sm")
+spacy.prefer_gpu()
+nlp = spacy.load("en_core_web_trf")
 
 
 #create the .spacy file for ner annotations as required by Spacy v3
@@ -24,14 +24,35 @@ def makeSpacyFile(foodEntities,type):
         # print(annotations)
         doc = nlp(text)
         ents = []
+        # for start,end,label in annotations["entities"]:
         for start,end,label in annotations:
             span = doc.char_span(start,end,label=label)
             ents.append(span)
 
+
+    #TODO: the spacy file is not working, fix this
+    #possible save the sampled as json and 
+    # then load it and to save as .doc
+    ''' AssertionError: [E923] It looks like there is no proper 
+    sample data to initialize the Model of component 'ner'.
+     To check your input data paths and annotation, 
+     run: python -m spacy debug data config.cfg and
+      include the same config override values you would specify
+       for the 'spacy train' command '''
+
+    #maybe save in the format 
+    '''
+    {
+        classes":["FOOD"],"annotations":[["text",{"entities":[[start, end,"FOOD"]]}],
+        ["text",{"entities":[[start, end,"FOOD"]]}]]
+    }
+    instead of current format which is 
+    "text",{entities:[[s,e,"FOOD"]]}
+    '''
     if(type == "USDA"):        
-        db.to_disk("SpaCy/datasets/customTrainSpacy/usdaTrain.spacy")    
+        db.to_disk("SpaCy/usdaTrain.spacy")    
     elif type == "YELP":
-        db.to_disk("SpaCy/datasets/customTrainSpacy/yelpTrain.spacy")    
+        db.to_disk("SpaCy/yelpTrain.spacy")    
 
 
 def yelp():
@@ -55,7 +76,7 @@ def yelp():
     makeSpacyFile(train_data,"YELP")
 
 
-def createTestTrain():
+def usda():
     ''' we will split into test train for both sets
         then combine the resulting sets to create final testing and training
 
@@ -66,19 +87,34 @@ def createTestTrain():
     usdaData = ent.entity()
     makeSpacyFile(usdaData,"USDA")
 
-    #TODO: split the two set into test trains set and combine to have one final train and test
+
 
 
 
 
 ############ this will start the training for the ner
 
-#TODO: create the new ner pipeline
-# train the new pipeline with the created .spacy files
-#test this new model with test data and extract the relevant items
+#TODO: load ner pipeline
+# get .spacey files for the two
+# generate config file to train 
+# load the saved model
+# use speech recog to get the unseen data to test model prediction 
+# render the result
 
 def NERStart():
-    return 0
+  usda()
+#   yelp()
+
+
+#   nerModel = spacy.load(
+#     "SpaCy/model/model-last"
+#   )
+
+
+if __name__ == "__main__":
+    NERStart()
+    
+    
 
 
 
