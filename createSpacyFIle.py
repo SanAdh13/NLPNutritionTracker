@@ -10,12 +10,6 @@ from spacy.tokens import DocBin
 import createEntitySet as ent
 
 spacy.prefer_gpu() 
-
-#TODO: try to see if the model will create with an existing model
-#TODO: if not then combine the FOOD model with existing
-#TODO: look to see if i can still use the YELP set or maybe abandon it
-
-
 nlp = spacy.load("en_core_web_trf")
 # nlp = spacy.blank("en")
 db = DocBin()
