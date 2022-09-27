@@ -8,10 +8,10 @@ import pandas as pd
     
 '''
 
-yelpLoc = "SpaCy/datasets/pos_reviews.csv"
+yelpLoc = "datasets/pos_reviews.csv"
 
 def writeToFile(lines):
-    with open("SpaCy/datasets/yelpDataToAnnotate.txt","w") as f:
+    with open("datasets/yelpDataToAnnotate.txt","w") as f:
         for x in lines:
             f.write(x)
             f.write('---')

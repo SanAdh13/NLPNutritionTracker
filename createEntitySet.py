@@ -20,6 +20,13 @@ import usdaSample as dataset
 
     i=0 will be the text, i=1 the entities 
 '''
+import json
+def toJSON(dict):
+    js = json.dumps(dict)
+    fp = open('datasets/usdaEntity.json','w')
+    fp.write(js)
+    fp.close
+
 
 def entity():
     #TODO: add more values to the template
@@ -34,7 +41,10 @@ def entity():
         "I shared {} with a friend"
     ]
 
-    foodEntity = []
+    foodEntity = {
+        "classes":["FOOD"],
+        "annotations":[] 
+    }
 
     usda = dataset.dataset()
 
@@ -57,12 +67,12 @@ def entity():
             entities.append((matchSpan[0],matchSpan[1],"FOOD"))
             entityCount-= 1 
 
-        # foodEntity.append((pickedTemplate,{"entities":entities}))  
-        foodEntity.append((pickedTemplate,entities))
-    return foodEntity
+        foodEntity["annotations"].append((pickedTemplate,{"entities":entities}))  
+
+    toJSON(foodEntity)
 
 
-
-
+if __name__ == "__main__":
+    entity()
 
 

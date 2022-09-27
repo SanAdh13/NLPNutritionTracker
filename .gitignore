@@ -2,3 +2,6 @@
 *\__pycache__
 *\testingStuff 
 *.spacy
+\SpaCy
+\model-best
+\model-last

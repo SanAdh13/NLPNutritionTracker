@@ -1,6 +1,6 @@
 import pandas as pd
 
-locUSDA = "SpaCy/datasets/food.csv"
+locUSDA = "datasets/food.csv"
 
 def dataset():
 
@@ -45,14 +45,3 @@ def dataset():
    x = pd.concat(lists).sample(frac=1)   
    
    return x
-
-
-# if __name__ == "__main__":
-#     x,y = dataset()
-
-         
-#     print(x.shape)
-#     print(y.shape)
-
-#     print(x.head())
-#     print(y.head())
