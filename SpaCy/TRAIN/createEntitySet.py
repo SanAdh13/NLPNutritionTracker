@@ -23,7 +23,7 @@ import usdaSample as dataset
 import json
 def toJSON(dict):
     js = json.dumps(dict)
-    fp = open('datasets/usdaEntity.json','w')
+    fp = open('C:\\Users\\samad\\Documents\\DISSERTATION\\datasets','w')
     fp.write(js)
     fp.close
 

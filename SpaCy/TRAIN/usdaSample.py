@@ -34,10 +34,10 @@ def dataset():
    foodFour = cleanedData[cleanedData.str.split().apply(len) == 4]
 
 
-   foodOne = foodOne.sample(n=500)
-   foodtwo = foodtwo.sample(n=300)
-   foodThree = foodThree.sample(n=150)
-   foodFour = foodFour.sample(n=100)
+   foodOne = foodOne.sample(n=800)
+   foodtwo = foodtwo.sample(n=500)
+   foodThree = foodThree.sample(n=400)
+   foodFour = foodFour.sample(n=150)
 
    lists = [foodOne,foodtwo,foodThree,foodFour]
 

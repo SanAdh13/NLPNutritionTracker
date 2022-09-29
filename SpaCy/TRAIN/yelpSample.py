@@ -8,18 +8,24 @@ import pandas as pd
     
 '''
 
+#TODO: decrease some of the excessive whitespace in the yelp dataset
+
+
 yelpLoc = "datasets/pos_reviews.csv"
 
 def writeToFile(lines):
     with open("datasets/yelpDataToAnnotate.txt","w") as f:
         for x in lines:
+
+            #some of the data have too much whitespace; reducing it to one
+            x = ' '.join(x.split())
             f.write(x)
-            f.write('---')
+            f.write('---') #adding as identifier for the annotator tool
         f.close()
 def yelp():
     yelpDF = pd.read_csv(yelpLoc)
     yelpData = yelpDF.text
-    yelpSample = yelpData.sample(n=30)
+    yelpSample = yelpData.sample(n=50)
 
     writeToFile(yelpSample)
     

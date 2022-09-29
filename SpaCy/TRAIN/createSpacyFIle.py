@@ -10,8 +10,8 @@ from spacy.tokens import DocBin
 import createEntitySet as ent
 
 spacy.prefer_gpu() 
-nlp = spacy.load("en_core_web_trf")
-# nlp = spacy.blank("en")
+# nlp = spacy.load("en_core_web_trf")
+nlp = spacy.blank("en")
 db = DocBin()
 
 #create the .spacy file for ner annotations as required by Spacy v3
@@ -33,9 +33,9 @@ def makeSpacyFile(TRAIN_DATA,type):
         doc.ents = ents
         db.add(doc)
     if(type == "USDA"):        
-        db.to_disk("TRAIN/usdaTrain.spacy")    
+        db.to_disk("datasets/spacyFIles/usdaTrain.spacy")    
     elif type == "YELP":
-        db.to_disk("TRAIN/yelpTrain.spacy")    
+        db.to_disk("datasets/spacyFIles/yelpTrain.spacy")    
 
 
 # def yelp():

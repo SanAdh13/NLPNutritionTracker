@@ -12,9 +12,8 @@ TODO: entity creation :
         consists of a validation set which is unseen data
 
 TODO: spacyFile creation: 
-    create a dev-train.spacy with the json
-    try using an existing model when creating the .spacy
-        if not look into adding the trained food model to the existing model
+    - create a dev-train.spacy with the json
+    - in order to fix the CNN forgetting problem use https://github.com/explosion/projects/tree/v3/tutorials/ner_double
 
 TODO: CLI spacy train: when doing final train, 
     in config.cfg increase training.patience and max_steps
