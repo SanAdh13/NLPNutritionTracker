@@ -1,7 +1,7 @@
 
 import random
 import re
-import usdaSample as dataset
+import usdaSample as sampled
 
 ''' we need to create the entity set for training the ner'''
 
@@ -23,7 +23,7 @@ import usdaSample as dataset
 import json
 def toJSON(dict):
     js = json.dumps(dict)
-    fp = open('C:\\Users\\samad\\Documents\\DISSERTATION\\datasets','w')
+    fp = open('./datasets/usdaEntity.json','w')
     fp.write(js)
     fp.close
 
@@ -46,7 +46,7 @@ def entity():
         "annotations":[] 
     }
 
-    usda = dataset.dataset()
+    usda = sampled.dataset()
 
     entityCount = usda.size -1 
 
@@ -69,6 +69,7 @@ def entity():
 
         foodEntity["annotations"].append((pickedTemplate,{"entities":entities}))  
 
+    print(len(foodEntity["annotations"]))
     toJSON(foodEntity)
 
 

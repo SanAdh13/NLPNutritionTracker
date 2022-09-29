@@ -10,8 +10,8 @@ from spacy.tokens import DocBin
 import createEntitySet as ent
 
 spacy.prefer_gpu() 
-# nlp = spacy.load("en_core_web_trf")
-nlp = spacy.blank("en")
+nlp = spacy.load("en_core_web_trf",disable=["tagger","parser", "attribute_ruler", "lemmatizer"])
+# nlp = spacy.blank("en")
 db = DocBin()
 
 #create the .spacy file for ner annotations as required by Spacy v3
@@ -26,16 +26,19 @@ def makeSpacyFile(TRAIN_DATA,type):
         for start,end,label in annotations["entities"]:
         # for start,end,label in annotations:
             span = doc.char_span(start,end,label=label,alignment_mode="strict")
-            if span is None:
-                pass
-            else:    
+            if span is not None:
                 ents.append(span)
-        doc.ents = ents
+        
+        # https://stackoverflow.com/questions/67407433/using-spacy-3-0-to-convert-data-from-old-spacy-v2-format-to-the-brand-new-spacy/67459259#67459259
+        try:
+            doc.ents = ents
+        except:
+            pass    
         db.add(doc)
     if(type == "USDA"):        
-        db.to_disk("datasets/spacyFIles/usdaTrain.spacy")    
+        db.to_disk("./datasets/spacyFiles/usdaTrain.spacy")    
     elif type == "YELP":
-        db.to_disk("datasets/spacyFIles/yelpTrain.spacy")    
+        db.to_disk("./datasets/spacyFiles/yelpTrain.spacy")    
 
 
 # def yelp():
@@ -66,11 +69,11 @@ def usda():
         finalTrain/Test set = yelpTrain/Test + customUSDATrain/Test 
     '''
 
-    #run the USDA entity creation files
-    ent.entity()
+    # run the USDA entity creation files
+    # ent.entity()
     # makeSpacyFile(usdaData,"USDA")
 
-    f = open('datasets/usdaEntity.json')
+    f = open('./datasets/usdaEntity.json')
     TRAIN_DATA = json.load(f)
 
     makeSpacyFile(TRAIN_DATA,"USDA")

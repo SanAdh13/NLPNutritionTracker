@@ -11,7 +11,7 @@ import pandas as pd
 #TODO: decrease some of the excessive whitespace in the yelp dataset
 
 
-yelpLoc = "datasets/pos_reviews.csv"
+yelpLoc = "./datasets/pos_reviews.csv"
 
 def writeToFile(lines):
     with open("datasets/yelpDataToAnnotate.txt","w") as f:
