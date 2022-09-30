@@ -17,7 +17,7 @@ db = DocBin()
 #create the .spacy file for ner annotations as required by Spacy v3
 # https://spacy.io/usage/training#training-data
 
-def makeSpacyFile(TRAIN_DATA,type):
+def spacytoDoc(TRAIN_DATA):
     
     ''' we will be saving the data {foodEntities} as a .spacy format for ner training'''
     for text,annotations in tqdm(TRAIN_DATA['annotations']):
@@ -35,54 +35,29 @@ def makeSpacyFile(TRAIN_DATA,type):
         except:
             pass    
         db.add(doc)
-    if(type == "USDA"):        
-        db.to_disk("./datasets/spacyFiles/usdaTrain.spacy")    
-    elif type == "YELP":
-        db.to_disk("./datasets/spacyFiles/yelpTrain.spacy")    
 
-
-# def yelp():
-#     yelpLoc = "SpaCy/datasets/yelpAnnotated.json"
-    
-#     #reads the json format annotated data
-#     with open(yelpLoc,"r") as f:
-#         data = json.load(f)
-
-#     entity_name = "FOOD"
-#     train_data = data['annotations']
-#     train_data = [tuple(i) for i in train_data] 
-
-
-#     for i in train_data:
-#         if i[1]['entities'] == []:
-#             i[1]['entities'] = (0,0,entity_name)
-#         else:
-#             i[1]['entities'][0] = tuple(i[1]['entities'][0]) 
-
-#     makeSpacyFile(train_data,"YELP")
-
-
-def usda():
-    ''' we will split into test train for both sets
-        then combine the resulting sets to create final testing and training
-
-        finalTrain/Test set = yelpTrain/Test + customUSDATrain/Test 
+def loadJSON():
+    ''' 
+    combine the two jsons to make one spacy file
     '''
 
     # run the USDA entity creation files
     # ent.entity()
-    # makeSpacyFile(usdaData,"USDA")
 
-    f = open('./datasets/usdaEntity.json')
-    TRAIN_DATA = json.load(f)
+    usda = open('./datasets/usdaEntity.json')
+    yelp = open("./datasets/yelpAnnotated.json")
+    
+    firstData = json.load(usda)
+    secondData = json.load(yelp)
 
-    makeSpacyFile(TRAIN_DATA,"USDA")
+    spacytoDoc(firstData)
+    spacytoDoc(secondData)
 
+    # data = json.load(open("./datasets/json/ValidationAnnotations.json"))
+    # spacytoDoc(data)
+    db.to_disk("./datasets/spacyFiles/trainData.spacy")
 
 if __name__ == "__main__":
-    usda()
+    loadJSON()
     
     
-
-
-

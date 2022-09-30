@@ -1,6 +1,6 @@
 import pandas as pd
 
-locUSDA = "./datasets/food.csv"
+locUSDA = "./datasets/csv/food.csv"
 
 def dataset():
 

@@ -1,4 +1,5 @@
 
+from __future__ import annotations
 import random
 import re
 import usdaSample as sampled
@@ -23,9 +24,10 @@ import usdaSample as sampled
 import json
 def toJSON(dict):
     js = json.dumps(dict)
-    fp = open('./datasets/usdaEntity.json','w')
+    fp = open('./datasets/json/usdaEntity.json','w')
     fp.write(js)
     fp.close
+
 
 
 def entity():
@@ -69,9 +71,10 @@ def entity():
 
         foodEntity["annotations"].append((pickedTemplate,{"entities":entities}))  
 
-    print(len(foodEntity["annotations"]))
-    toJSON(foodEntity)
+    # length = len(foodEntity["annotations"])-10
+    # print((foodEntity["annotations"][length-10:]))
 
+    toJSON(foodEntity)
 
 if __name__ == "__main__":
     entity()

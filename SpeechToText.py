@@ -44,7 +44,8 @@ def speech(r,mic):
 r = sr.Recognizer()
 mic = sr.Microphone()
 
-speech(r,mic)
+if __name__ == "__main__":
+	speech(r,mic)
 
 
 
