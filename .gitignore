@@ -2,7 +2,6 @@
 *\__pycache__
 *\testingStuff 
 *.spacy
-
 *.json
 \model
 \model-best
