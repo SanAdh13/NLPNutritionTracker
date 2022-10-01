@@ -1,6 +1,15 @@
 import pandas as pd
-
+import matplotlib.pyplot as plt
+import numpy as np
 locUSDA = "./datasets/csv/food.csv"
+
+
+def piechart(y):
+   labels = ["one-worded","two-worded","three-worded","four-worded"]
+   plt.pie(y, labels=labels)
+   plt.title("Breakdown of sampled USDA branded food by word count")
+   plt.savefig("figures/usdaPieDistribution.png")
+
 
 def dataset():
 
@@ -28,20 +37,34 @@ def dataset():
 
    cleanedData = cleanup(usdaData)
 
-   foodOne = cleanedData[cleanedData.str.split().apply(len) == 1]
-   foodtwo = cleanedData[cleanedData.str.split().apply(len) == 2]
-   foodThree = cleanedData[cleanedData.str.split().apply(len) == 3]
-   foodFour = cleanedData[cleanedData.str.split().apply(len) == 4]
+   foodOne = cleanedData[cleanedData.str.split().apply(len) == 1] #1388
+   foodtwo = cleanedData[cleanedData.str.split().apply(len) == 2] #13851
+   foodThree = cleanedData[cleanedData.str.split().apply(len) == 3] #26041 
+   foodFour = cleanedData[cleanedData.str.split().apply(len) == 4] #22814
+
+   # print(foodOne.shape)
+   # print(foodtwo.shape)
+   # print(foodThree.shape)
+   # print(foodFour.shape)
 
 
-   foodOne = foodOne.sample(n=800)
-   foodtwo = foodtwo.sample(n=500)
-   foodThree = foodThree.sample(n=400)
-   foodFour = foodFour.sample(n=150)
+   foodOne = foodOne.sample(frac=1)
+   foodtwo = foodtwo.sample(n=3000)
+   foodThree = foodThree.sample(n=2000)
+   foodFour = foodFour.sample(n=1500)
 
    lists = [foodOne,foodtwo,foodThree,foodFour]
 
    #combine and shuffled list for final sample and reduce the bias in training
    x = pd.concat(lists).sample(frac=1)   
    
+   y = np.array([len(foodOne),len(foodtwo),len(foodThree),len(foodFour)])
+
+   piechart(y)
    return x
+
+
+# if __name__ == "__main__":
+#    a = dataset()
+
+#    print(len(a))

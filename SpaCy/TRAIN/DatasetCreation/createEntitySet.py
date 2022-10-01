@@ -35,12 +35,23 @@ def entity():
     templates = [ 
         " Today i ate {} ",
         "For lunch i had {} , {} and {} ",
-        " I decided to have a portion of {} ,and some {} ",
+        "I decided to have a portion of {} ,and some {} ",
         "I had {} and {} for breakfast",
         "for breakfast i had {}, for lunch i had {},{} and for dinner i'll eat {} and {} "
         "I only had {} today", 
         "For supper i ate two {} with one {} and half of {}",
-        "I shared {} with a friend"
+        "I shared {} with a friend",
+        "I ordered {} with {}",
+        "I ate {} , {}, {}",
+        "I only ate a {}", 
+        "I am currently eating {}",
+        "I'm eating {}",
+        "I made {} for lunch",
+        "I made {} and {} for dinner",
+        "I made {} as a snack",
+        "I'm making {} with {} for dinner",
+        "I'm gonna eat {} later",
+        "I might order {} for dinner"
     ]
 
     foodEntity = {

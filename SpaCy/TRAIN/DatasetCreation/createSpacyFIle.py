@@ -12,15 +12,15 @@ import createEntitySet as ent
 spacy.prefer_gpu() 
 nlp = spacy.load("en_core_web_trf",disable=["tagger","parser", "attribute_ruler", "lemmatizer"])
 # nlp = spacy.blank("en")
-db = DocBin()
+
 
 #create the .spacy file for ner annotations as required by Spacy v3
 # https://spacy.io/usage/training#training-data
 
-def spacytoDoc(TRAIN_DATA):
-    
-    ''' we will be saving the data {foodEntities} as a .spacy format for ner training'''
-    for text,annotations in tqdm(TRAIN_DATA['annotations']):
+def toSpacy(DATA):
+    db = DocBin()
+    ''' we will be saving the data {foodEntities} as a .spacy format in compliance with SpaCy v3.0>'''
+    for text,annotations in tqdm(DATA['annotations']):
         doc = nlp.make_doc(text)
         ents = []
         for start,end,label in annotations["entities"]:
@@ -36,26 +36,40 @@ def spacytoDoc(TRAIN_DATA):
             pass    
         db.add(doc)
 
+    return db
+
+def saveDoc(d,TYPE):
+    if TYPE == "TRAIN":
+        d.to_disk("./datasets/spacyFiles/trainData.spacy")
+    else:
+        d.to_disk("./datasets/spacyFiles/validationData.spacy")
+
 def loadJSON():
     ''' 
     combine the two jsons to make one spacy file
     '''
-
     # run the USDA entity creation files
-    # ent.entity()
+    ent.entity()
 
-    usda = open('./datasets/usdaEntity.json')
-    yelp = open("./datasets/yelpAnnotated.json")
+    usda = open('./datasets/json/usdaEntity.json')
+    yelp = open("./datasets/json/yelpAnnotated.json")
     
     firstData = json.load(usda)
     secondData = json.load(yelp)
 
-    spacytoDoc(firstData)
-    spacytoDoc(secondData)
+    #TODO: before creating the spacy split the annotation into test train
+    #maybe use the scikit test train split to do it not sure currently
+ 
+    # length = len(foodEntity["annotations"])-10
+    # print((foodEntity["annotations"][length-10:]))
 
-    # data = json.load(open("./datasets/json/ValidationAnnotations.json"))
-    # spacytoDoc(data)
-    db.to_disk("./datasets/spacyFiles/trainData.spacy")
+
+    firstDB =  toSpacy(firstData) # traain
+    secondDB =  toSpacy(secondData) # validation
+
+    saveDoc(firstDB,"TRAIN")
+    saveDoc(secondDB,"Validation")
+   
 
 if __name__ == "__main__":
     loadJSON()
