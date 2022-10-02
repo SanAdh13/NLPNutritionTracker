@@ -37,7 +37,7 @@ def entity():
         "For lunch i had {} , {} and {} ",
         "I decided to have a portion of {} ,and some {} ",
         "I had {} and {} for breakfast",
-        "for breakfast i had {}, for lunch i had {},{} and for dinner i'll eat {} and {} "
+        "for breakfast i had {}, for lunch i had {},{} and for dinner i'll eat {} and {} ",
         "I only had {} today", 
         "For supper i ate two {} with one {} and half of {}",
         "I shared {} with a friend",
@@ -81,9 +81,6 @@ def entity():
             entityCount-= 1 
 
         foodEntity["annotations"].append((pickedTemplate,{"entities":entities}))  
-
-    # length = len(foodEntity["annotations"])-10
-    # print((foodEntity["annotations"][length-10:]))
 
     toJSON(foodEntity)
 

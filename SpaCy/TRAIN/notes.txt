@@ -3,20 +3,6 @@ although this is able to predict, its very basic and also have lots of errors
 
 I have a few backend TODOs to keep in mind
 
-TODO: sampling : increase the amount of items to be sampled
-    will help with accuracy (will increase training time but should be fine)
-
-TODO: entity creation : 
-    add more items to the template
-    create a dev-train.json
-        consists of a validation set which is unseen data
-
-TODO: spacyFile creation: 
-    - create a dev-train.spacy with the json
-    - in order to fix the CNN forgetting problem use https://github.com/explosion/projects/tree/v3/tutorials/ner_double
-
-TODO: CLI spacy train: when doing final train, 
-    in config.cfg increase training.patience and max_steps
 
 TODO: use the openAI whisper 
     use the obtained text with the model in NER.py
