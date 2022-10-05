@@ -1,13 +1,30 @@
-<html>
+{% extends 'layout.html'%}
 
-<!-- https://github.com/ralzohairi/js-audio-recording -->
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-
-    {% block body %}
-    <div class="main">
-        <h1 class="display-heading"></h1>
+{%block title %}
+    <div>
+        <main class="container">
+            <h1> Welcome to the food tracking application </h1>
+        </main>
     </div>
+{% endblock %}
 
-</html>
+{% block body %}
+<div class="container">
+    <h1> This is the main page </h1>
+    <p>
+        MyNutriTrack is a brand new nutrition tracking application
+        that allows a user to add their food intake with a voice input
+    </p>
+    <p>
+        For a user to add their food intake simply click 'Add Food' 
+        in the navigation bar on top 
+    </p>
+    <p>
+        To track your intakes, click the 'Track' option in the navigation bar on top
+    </p>
+</div>
+{% endblock %}
+
+{% include 'modal.html' %}
+
+</body>
