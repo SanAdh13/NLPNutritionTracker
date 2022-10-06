@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{%block body %}
+
+<h1>This is the add food page</h1> 
+
+<div class="container">
+    <!-- <a>
+        <img id="startRecording" onclick="" width="30%" height="30%" class="rounded mx-auto d-block"
+        src ="{{ url_for('static',filename='img/microphone.svg')}}" > 
+         https://www.svgrepo.com/svg/20297/microphone 
+      </a> -->
+    <button id="startRecording" type="button" backgrou class="btn btn-primary">Record</button> 
+    <button id ="stopRecording" disabled type="button" class="btn btn-primary">Stop</button> 
+
+</div>
+
+<script>
+    navigator
+        .mediaDevices
+        .getUserMedia({audio: true})
+        .then(stream => { handlerFunction(stream) });
+
+    function handlerFunction(stream) {
+        rec = new MediaRecorder(stream);
+        rec.ondataavailable = e => {
+            audioChunks.push(e.data);
+            if (rec.state == "inactive") {
+                let blob = new Blob(audioChunks, {type: 'audio/mpeg-3'});
+                sendData(blob);
+            }
+        }
+    }
+
+    function sendData(data) {
+        var form = new FormData();
+        form.append('file', data, 'data.mp3');
+        form.append('title', 'data.mp3');
+        //Chrome inspector shows that the post data includes a file and a title.
+        $.ajax({
+            type: 'POST',
+            url: '/save',
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false
+        }).done(function(data) {
+            console.log(data);
+        });
+    }
+
+    startRecording.onclick = e => {
+        console.log('Recording are started..');
+        startRecording.disabled = true;
+        stopRecording.disabled = false;
+        audioChunks = [];
+        rec.start();
+    };
+
+    stopRecording.onclick = e => {
+        console.log("Recording are stopped.");
+        startRecording.disabled = false;
+        stopRecording.disabled = true;
+        rec.stop();
+    };
+</script>
+{%endblock%}
