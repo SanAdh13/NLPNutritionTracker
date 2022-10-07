@@ -6,22 +6,30 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Add Food</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <a href="{{# url_for('recordVoice')}}">
-            <img width="30%" height="30%" class="rounded mx-auto d-block"
-
-            src ="{{# url_for('static',filename='img/microphone.svg')}}"> 
-            <!-- https://www.svgrepo.com/svg/20297/microphone -->
+        <div class="modal-body"> 
+          <a> 
+            <img 
+              width="30%" 
+              height="30%" 
+              class="rounded mx-auto d-block"  
+              id="recordButton"
+              src ="{{url_for('static',filename='img/188-microphone-recording.svg')}}"> 
           </a>
-
-
         </div>
         <div class="modal-footer">
-          <!-- <a href="{{url_for('stop')}}"> -->
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+          <a>
+            <button id ="pauseButton" type="button" class="btn btn-secondary">Cancel Recording</button>
           </a>
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button id="stopButton"  type="button" class="btn btn-primary">Submit Recording</button>
+
+          <!-- <div>
+            <a> Recorder built using: https://github.com/addpipe/simple-recorderjs-demo </a>
+          </div> -->
+         
         </div>
       </div>
     </div>
   </div>
+
+  <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script> 
+  <script src ="{{url_for('static',filename='js/app.js')}}"></script>

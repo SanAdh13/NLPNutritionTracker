@@ -2,41 +2,26 @@
 
 # Python program to translate
 # speech to text and text to speech
+from email.mime import audio
 import speech_recognition as sr
 
-def speech(r,audio):
-	text = r.recognize_google(audio)
-	return text.lower()
+r = sr.Recognizer()
+def speech(file):
 
-
-
-
-	# while(1):
-	# 	try:	
-	# 		with sr.Microphone() as source:
-	# 			r.adjust_for_ambient_noise(source)
-				
-	# 			#listens for the user's input
-	# 			audio2 = r.listen(source)
-				
-	# 			# Using google to recognize audio
-	# 			text = r.recognize_google(audio2)
-	# 			text = text.lower()
-
-	# 			print("Did you say '"+text+" '")
-	# 			userConfirm = input("Yes/No: ")
-
-	# 			if(userConfirm.lower() == "yes" or userConfirm.lower() == "y"):
-	# 				# print("Success")
-	# 				NER.ner(text)
-	# 			else:
-	# 				# print("Try again")
-	# 				speech()  #recursion yay 😵‍💫
-	# 	except sr.RequestError as e:
-	# 		print("Could not request results; {0}".format(e))
+	try:
+		with sr.AudioFile(file) as source:
+			# r.adjust_for_ambient_noise(source)
+			audio2 = r.record(source)
 			
-	# 	except sr.UnknownValueError:
-	# 		print("unknown error occured")
+			print(type(audio2))
+			
+			# try:
+			text = r.recognize_google(audio2, language="en")
+			return text
+			
+	except Exception as e: 
+		print("exception"+str(e))
+
 
 
 if __name__ == "__main__":
