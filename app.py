@@ -1,8 +1,6 @@
 import os
 from flask import Flask,render_template,request,url_for,redirect,flash
 from flaskext.markdown import Markdown
-from mimetypes import guess_extension
-
 
 from spacy import displacy
 import SpeechToText as sp2Txt
@@ -35,13 +33,20 @@ def addFood():
 
 @app.route("/save",methods=['POST'])
 def record():
-    if 'file' in request.files:
-        file = request.files['file']
-        # with open('temp/audio.wav','wb') as audio:
-        #     file.save(audio)
+    f = request.files['audio_data']
+    with open('temp/audio.wav','wb') as audio:
+        f.save(audio)
+
+    # text = sp2Txt.speech()
+    # return str(text)
+
+    # if 'file' in request.files:
+    #     file = request.files['file']
+    #     with open('temp/audio.wav','wb') as audio:
+    #         file.save(audio)
         
-        # TODO: send this file straight to speechRecog and get converted text
-        sp2Txt.speech(file)
+    #     # TODO: send this file straight to speechRecog and get converted text
+    #     # sp2Txt.speech(file)
 
 
     
