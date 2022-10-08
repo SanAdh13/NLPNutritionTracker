@@ -25,8 +25,6 @@ cancelButton.addEventListener("click",cancelRecording)
 
 function startRecording() { 
 
-    changeImgtoGIF();
-
     rec = null;
     // recordButton.src = "/static/img/188-microphone-recording-flat.gif"
     console.log("recordButton clicked");
@@ -66,6 +64,11 @@ function startRecording() {
         rec = new Recorder(input, {
             numChannels: 1
         }) 
+
+
+        //start the recorder too 
+        start();
+
         //start the recording process 
         rec.record()
         console.log("Recording started");
@@ -91,13 +94,13 @@ function stopRecording() {
         gumStream.getAudioTracks()[0].stop();
         rec.exportWAV(submitRecording);
     }
-    
-
-}
+    //stop the timer
+    stop()    
+}   
 
 function cancelRecording(){
     // recordButton.src = "/static/img/188-microphone-recording.svg"
-    console.log("cancelButton clicked");
+    // console.log("cancelButton clicked");
     if (rec) {
         submitButton.disabled = true;
         stopButton.disabled = true;
@@ -107,25 +110,21 @@ function cancelRecording(){
         rec = null;
         console.log(rec)
     }
+    //reset timer
+    reset();
 }
 
 function submitRecording(blob){
-
     submitButton.addEventListener("click", function(event) {
 
-        //once submitted disable the submit button
-        submitButton.disabled=true;
+        //reset timer
+        reset();
 
-        // var xhr = new XMLHttpRequest();
-        // xhr.onload=function(e) {
-            
-        // }
-        //create the wav blob and pass it on to createDownloadLink 
+
+        //once submitted disable the submit button
+        submitButton.disabled=true; 
         var form = new FormData();
         form.append("audio_data",blob,'audio')
-        // xhr.open("POST",'/save',true)
-        // xhr.send(form) 
-
         $.ajax({
             type: 'POST',
             url: '/save',
@@ -140,10 +139,55 @@ function submitRecording(blob){
 
 }
 
-function changeImgtoGIF(){
+function timeToString(time) {
+    let diffInHrs = time / 3600000;
+    let hh = Math.floor(diffInHrs);
+  
+    let diffInMin = (diffInHrs - hh) * 60;
+    let mm = Math.floor(diffInMin);
+  
+    let diffInSec = (diffInMin - mm) * 60;
+    let ss = Math.floor(diffInSec);
+  
+    let diffInMs = (diffInSec - ss) * 100;
+    let ms = Math.floor(diffInMs);
+  
+    let formattedMM = mm.toString().padStart(2, "0");
+    let formattedSS = ss.toString().padStart(2, "0");
+    let formattedMS = ms.toString().padStart(2, "0");
+  
+    return `${formattedMM}:${formattedSS}:${formattedMS}`;
+  }
 
-    // var currentImg = document.querySelector('#recordButton');
-    // //replace
-    // currentImg.outerHTML = 
-    //     '<lord-icon id="recordButton" class="rounded mx-auto d-block" style="width:30% ; height:30% " src="https://cdn.lordicon.com/pneolqso.json" trigger="loop"> </lord-icon>';
+let startTime;
+let elapsedTime = 0;
+let timerInterval;
+function print(txt) {
+    document.getElementById("display").innerHTML = txt;
 }
+function start() {
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function printTime() {
+    elapsedTime = Date.now() - startTime;
+    print(timeToString(elapsedTime));
+    }, 10);
+}
+
+function stop(){
+    clearInterval(timerInterval);
+}
+function reset(){
+    clearInterval(timerInterval);
+    print("00:00:00");
+    elapsedTime = 0;
+}
+// let startBtn = document.getElementById('recordButton')
+// let stopBtn = document.getElementById('stopButton')
+// let reset1 = document.getElementById('submitButton') 
+// let reset2 = document.getElementById('cancelButton')
+
+// startBtn.addEventListener("click",start)
+// stopBtn.addEventListener("click",stop)
+// reset1.addEventListener("click",reset)
+// reset2.addEventListener("click",reset)
+  
