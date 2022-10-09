@@ -2,7 +2,6 @@ import os
 from flask import Flask,render_template,request,url_for,redirect,flash
 from flaskext.markdown import Markdown
 
-from spacy import displacy
 import SpeechToText as sp2Txt
 import NER as ner
 
@@ -13,13 +12,7 @@ app.secret_key = 'dd hh' #the secret_key can be anything
 app.config["UPLOAD_FOLDER"] = 'C:\\Users\\samad\\Documents\\DISSERTATION\\temp'
 Markdown(app)
 
-''' 
-TODO: we will take the voice clip recorded via JS
-and pass it for speech.speech() in order to get {text}  
-and then usse ner.ner({text})
-use displacy to show the extracted ENT
-and then add the relevant ents to db         
-'''
+
 
 #landing page
 @app.route("/")
@@ -37,20 +30,17 @@ def record():
     with open('temp/audio.wav','wb') as audio:
         f.save(audio)
 
-    # text = sp2Txt.speech()
-    # return str(text)
+    #pass the audio recording to speech2text to convert to text
+    text = sp2Txt.speech()
 
-    # if 'file' in request.files:
-    #     file = request.files['file']
-    #     with open('temp/audio.wav','wb') as audio:
-    #         file.save(audio)
-        
-    #     # TODO: send this file straight to speechRecog and get converted text
-    #     # sp2Txt.speech(file)
+    # we use the text gained on the ner model we have and return 
+    displacy, dataForDB = ner.ner(text)
 
 
-    
-    return '<h1>Success</h1>'
+    #TODO: add this to the 
+     
+    return ("Response: "+ displacy) 
+
 
 
 @app.route("/track")

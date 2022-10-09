@@ -101,6 +101,9 @@ function stopRecording() {
 function cancelRecording(){
     // recordButton.src = "/static/img/188-microphone-recording.svg"
     // console.log("cancelButton clicked");
+
+    //this method is called if either the recording is cancelled via pressing the X button 
+    // or the modal is closed by clicking outside the box
     if (rec) {
         submitButton.disabled = true;
         stopButton.disabled = true;
@@ -112,6 +115,7 @@ function cancelRecording(){
     }
     //reset timer
     reset();
+    document.getElementById("speechToText").innerHTML = "";
 }
 
 function submitRecording(blob){
@@ -119,6 +123,7 @@ function submitRecording(blob){
 
         //reset timer
         reset();
+        document.getElementById("speechToText").innerHTML = "fetching result: This may take some time";
 
 
         //once submitted disable the submit button
@@ -132,9 +137,11 @@ function submitRecording(blob){
             cache: false,
             processData: false,
             contentType: false
-        }).done(function(data) {
-            console.log(data);
-        });
+        }).done(function(data) { 
+
+            //this updates the span with the returned text from speechToText
+            //TODO: use displacy to show the entities
+        document.getElementById("speechToText").innerHTML = data;});
     })
 
 }
@@ -181,13 +188,5 @@ function reset(){
     print("00:00:00");
     elapsedTime = 0;
 }
-// let startBtn = document.getElementById('recordButton')
-// let stopBtn = document.getElementById('stopButton')
-// let reset1 = document.getElementById('submitButton') 
-// let reset2 = document.getElementById('cancelButton')
 
-// startBtn.addEventListener("click",start)
-// stopBtn.addEventListener("click",stop)
-// reset1.addEventListener("click",reset)
-// reset2.addEventListener("click",reset)
   

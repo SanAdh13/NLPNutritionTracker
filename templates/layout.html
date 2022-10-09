@@ -8,8 +8,6 @@
     <script src ="{{url_for('static',filename='js/app.js')}}"></script>
     <script src ="{{url_for('static',filename='js/modal.js')}}"></script>
     
-    
-    
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,6 +22,7 @@
       </div>
 
     {% block title %}
+
     {% endblock %}
 
     
@@ -32,12 +31,15 @@
           <div class="starter-template">
             <hr style="padding-top: 100px;">
             {% block body %}
+
+
             {% endblock %}
           </div>
         </div> 
     </div>
-    {%block modal %}
-  {% endblock %}
+
+  {#block modal #}
+  {# endblock #}
       
   </body>
 </html>
