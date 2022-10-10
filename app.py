@@ -1,17 +1,17 @@
-import os
-from flask import Flask,render_template,request,url_for,redirect,flash
-from flaskext.markdown import Markdown
+from flask import Flask, g,render_template,request
+import sqlite3
+
+
 
 import SpeechToText as sp2Txt
 import NER as ner
+import database as db
 
 
 
 app = Flask(__name__)
 app.secret_key = 'dd hh' #the secret_key can be anything
 app.config["UPLOAD_FOLDER"] = 'C:\\Users\\samad\\Documents\\DISSERTATION\\temp'
-Markdown(app)
-
 
 
 #landing page
@@ -36,15 +36,15 @@ def record():
     # we use the text gained on the ner model we have and return 
     displacy, dataForDB = ner.ner(text)
 
+    db.addToFoodTable(dataForDB)
 
-    #TODO: add this to the 
-     
-    return ("Response: "+ displacy) 
-
+    return ("""<p>The following detected response has been added to the database</p>
+    <p> Response:  """+ displacy) 
 
 
 @app.route("/track")
 def track():
+    #TODO: finish this section of the site
     return render_template("track.html")
 
 if __name__ == "__main__":

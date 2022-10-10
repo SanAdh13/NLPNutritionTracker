@@ -2,24 +2,43 @@ import datetime;
 import sqlite3;
 
 
-"""
-this function will be used to create the sqlite DB 
-"""
-def createDB():
-    
-    return 0
+# first we create an empty database file
 
-"""
-    A table for the food stuff to add for the user 
-    eg. 
-    DATE    | FOODTYPE  | FOODITEM | QUANTITY
-    12-2-22 | Breakfast | Eggs     | 2
-"""
-def addToFoodTable(foodType,foodItem,quantity):   
+def dbCheck():
+    # the db is created automatically if it doesnt exist
+    conn = sqlite3.connect('project.db')
+
+    with open('schema.sql')as f:
+        conn.executescript(f.read())
+
+    return conn
+
+def addToFoodTable(spacyResultArr):
+
+    #firstly we will check if the db exists 
+    conn = dbCheck() 
+    cur = conn.cursor()
+
+    # now we want to make a connection to the db to add to the table 
+    
+    ##the array is currenlty in the format 
+    # food | quantity
+    # 
+    # we want to save it in database in the format
+    # food | quantity | date   
 
     date = datetime.date.today()
-    
-    #add to sql table
+    query = "INSERT INTO food(foodItem,quantity,dateAdded) values (?,?,?);"
+
+    for values in spacyResultArr:
+        #values; [0] is the food [1] is the quantity
+        cur.execute(query,(values[0],values[1],date))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
     
 
 
@@ -37,5 +56,11 @@ def addToFoodTable(foodType,foodItem,quantity):
         some other charts should be observed aswell just to see
 """    
 def getFood(date):
-    return 0    
+    conn = dbCheck()
+    conn.row_factory = sqlite3.Row
+    data = conn.execute('select * from food').fetchall()
+    conn.close()
+    return data
+
+
 

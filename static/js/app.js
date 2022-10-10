@@ -35,8 +35,8 @@ function startRecording() {
         audio: true,
         // video: false
     } 
-    /* Disable the record button until we get a success or fail from getUserMedia() */
 
+    /* Disable the record button until we get a success or fail from getUserMedia() */
     // when we start recording disable record and submit 
     // all other buttons are enabled
     recordButton.disabled = true;
@@ -66,7 +66,7 @@ function startRecording() {
         }) 
 
 
-        //start the recorder too 
+        //start the timer
         start();
 
         //start the recording process 
@@ -140,7 +140,7 @@ function submitRecording(blob){
         }).done(function(data) { 
 
             //this updates the span with the returned text from speechToText
-            //TODO: use displacy to show the entities
+            //displacy format to show the entities in the users submission
         document.getElementById("speechToText").innerHTML = data;});
     })
 

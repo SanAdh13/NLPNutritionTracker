@@ -7,4 +7,3 @@ pandas
 torch
 torchaudio
 tqdm
-Flask-Markdown

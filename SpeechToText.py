@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
 
 
-
+# TODO: look into self implementation of the speechtotext or whisper ai ?
 
 	
 
