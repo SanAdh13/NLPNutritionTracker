@@ -1,6 +1,132 @@
 {% extends 'layout.html'%}
 
-{% block body %}
-<h1> this is the track page </h1>
+{% block title %}
+<body class="text-bg-light">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{url_for('index') }} ">MyNutriTrack</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link"                         
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            data-bs-custom-class="custom-tooltip"
+                            data-bs-title="This option is disabled in this page."
+                            data-bs-toggle="tooltip" href="">Add Food</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('track') }}">Track</a>
+                    </li>
+                    </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div>
+            <main class="container">
+                <h1>TRACK </h1>
+            </main>
+        </div>
 
+<style>
+    .custom-tooltip {
+        --bs-tooltip-bg: gray;
+      }      
+</style>
+<script>
+// Initialize tooltips
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+</script>
+
+{% endblock %}
+
+
+{% block body %}
+<!-- https://www.daterangepicker.com/#example1 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<h1> This is the Track page </h1>
+<p>
+    Track your nutrition intake in this section
+</p>
+<div>
+    <div>
+        <form action="{{ url_for('getSelection') }}"  method="post">
+            <span>Please select an option below</span>
+            <select name="dateSelection" id="dateSelection" class="form-select" aria-label="Default select example">
+                 {% for d in data %}
+                        <option value="{{d.option}}">{{d.option}}</option>
+                 {% endfor %}
+            </select>
+            <button id="trackButton" type="submit" style="float:right; margin-top: 5px;" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+        <form action="{{url_for('getSelectionByDate')}}" method="post">
+            <span> or select a date range </span>
+            <input type="text" name="dateRange" value="" />    
+        </form>
+
+    <div>
+
+    </div>
+
+    <script>
+        $(function(){
+            $('input[name="dateRange"]').daterangepicker({
+
+            }, function(start, end, label) {
+                $.ajax({
+                    type:"POST",
+                    url:"/getDates",
+                    data: {from:start.format('YYYY-MM-DD'),
+                            to:end.format('YYYY-MM-DD')}
+                }).done(function(data){
+                   alert(data)
+                });
+            });
+        });
+
+    </script>
+
+
+</div>
+
+<!-- TODO: this will render the charts for the user option -->
+<canvas id="myChart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
+  
+</canvas>
+
+<!-- TODO: this will just return the table for the fetched data  -->
+<table name="userData" class="table table-striped">
+    <tr>
+        <th>Food</th>
+        <th>Quantity</th>
+        <th>Date Added</th>
+    </tr>
+    {% for i in items %}
+        <tr>
+            <td>{{i.foodItem}} </td>
+            <td>{{i.quantity}}</td>
+            <td>{{i.dateAdded }} </td>
+
+        </tr>
+    {% endfor %}
+
+</table>
+    <script>
+        
+        </script> 
 {% endblock %}

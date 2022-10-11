@@ -13,19 +13,17 @@ def createList(doc,arr):
         currEnt = doc.ents[i] # the current ent
         try: 
             nextEnt = doc.ents[i+1] # the next ent in order to check
+            if(currEnt.label_ == "CARDINAL") and nextEnt.label_ == "FOOD":
+                i+=1
+                arr.append([nextEnt.text,currEnt._.numerize()])
+            else:
+                if (currEnt.label_ == "FOOD"): 
+                    arr.append([currEnt.text,1])
         except: 
-            pass
-
-        print(currEnt.label_, nextEnt.label_)
-
-        if(currEnt.label_ == "CARDINAL") and nextEnt.label_ == "FOOD":
-            i+=1
-            arr.append([nextEnt.text,currEnt._.numerize()])
-        else:
             if (currEnt.label_ == "FOOD"): 
                 arr.append([currEnt.text,1])
+            pass
         i+=1
-
     return arr
 '''
 Explanation: 
@@ -35,6 +33,8 @@ arr is the 2d list that should be useful for the database
   itll only look at cardinal and food
    and the format will be [[food,n],[food,n]] where food is the food item and n is the quantity
 '''
+
+#TODO: if time permits; maybe we can also look into weight inputs eg. 500 grams (ner.label_ = quantity)
 
 def ner(text):
   nlp = spacy.load(nlpLoc)
@@ -50,8 +50,7 @@ def ner(text):
   else:
       arr = createList(doc,arr)
 
-
-  print(arr)
-  print(doc.ents)
+#   print(arr)
+#   print(doc.ents)
 
   return displacyEnts, arr

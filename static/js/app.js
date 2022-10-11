@@ -141,7 +141,8 @@ function submitRecording(blob){
 
             //this updates the span with the returned text from speechToText
             //displacy format to show the entities in the users submission
-        document.getElementById("speechToText").innerHTML = data;});
+            document.getElementById("speechToText").innerHTML = data;
+        });
     })
 
 }

@@ -1,7 +1,4 @@
-from flask import Flask, g,render_template,request
-import sqlite3
-
-
+from flask import Flask, render_template,request
 
 import SpeechToText as sp2Txt
 import NER as ner
@@ -18,11 +15,6 @@ app.config["UPLOAD_FOLDER"] = 'C:\\Users\\samad\\Documents\\DISSERTATION\\temp'
 @app.route("/")
 def index():
     return render_template("index.html")
-
-@app.route("/addFood")
-def addFood():
-    return render_template("addFood.html")
-
 
 @app.route("/save",methods=['POST'])
 def record():
@@ -41,11 +33,36 @@ def record():
     return ("""<p>The following detected response has been added to the database</p>
     <p> Response:  """+ displacy) 
 
-
+data = [{'option':'daily'},
+        {'option':'weekly'},
+        {'option':'monthly'},
+        {'option':'Yearly'}]
 @app.route("/track")
 def track():
     #TODO: finish this section of the site
-    return render_template("track.html")
+
+
+
+    return render_template("track.html",data=data)
+
+@app.route("/track", methods=['POST'])
+def getSelection():
+    selected = request.form.get('dateSelection')
+
+    vals = db.getFood()
+
+    return render_template("track.html",data = data, items=vals)
+
+@app.route('/getDates', methods=['POST'])
+def getSelectionByDate():
+    start = request.form.get('from')
+    end = request.form.get('to')
+
+    # get the data within this range from sql and then its returned via ajax
+    vals = db.getFoodByDateRange(start,end)
+
+    return "data sent"+start+" "+end
+    # return vals
 
 if __name__ == "__main__":
     app.run(debug=True)

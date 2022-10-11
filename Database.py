@@ -27,7 +27,7 @@ def addToFoodTable(spacyResultArr):
     # we want to save it in database in the format
     # food | quantity | date   
 
-    date = datetime.date.today()
+    date = datetime.datetime.now()
     query = "INSERT INTO food(foodItem,quantity,dateAdded) values (?,?,?);"
 
     for values in spacyResultArr:
@@ -37,9 +37,6 @@ def addToFoodTable(spacyResultArr):
     conn.commit()
     cur.close()
     conn.close()
-
-
-    
 
 
 """
@@ -55,12 +52,18 @@ def addToFoodTable(spacyResultArr):
             eg. total calorie intake, protein, fats (saturates and unsaturated) etc
         some other charts should be observed aswell just to see
 """    
-def getFood(date):
+def getFood():
     conn = dbCheck()
     conn.row_factory = sqlite3.Row
     data = conn.execute('select * from food').fetchall()
     conn.close()
+
     return data
 
 
+def getFoodByDateRange(start,end ):
+    conn = dbCheck()
+    conn.row_factory = sqlite3.Row
+
+    
 
