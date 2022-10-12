@@ -51,19 +51,65 @@ def addToFoodTable(spacyResultArr):
         table: the actual nutrition breakdown for all food item 
             eg. total calorie intake, protein, fats (saturates and unsaturated) etc
         some other charts should be observed aswell just to see
-"""    
-def getFood():
+"""   
+Statements = [
+    'select * from food'
+    'select * from food, grouped by #TODO: day',
+    'select * from food, grouped by #TODO: week',
+    'select * from food, grouped by #TODO: month',
+    'select * from food, grouped by #TODO: year']
+
+def getFood(num):
     conn = dbCheck()
     conn.row_factory = sqlite3.Row
-    data = conn.execute('select * from food').fetchall()
+    data = conn.execute(Statements[num]).fetchall()
     conn.close()
-
+    data = [tuple(row) for row in data]
     return data
 
 
 def getFoodByDateRange(start,end ):
     conn = dbCheck()
     conn.row_factory = sqlite3.Row
+    data = conn.execute('select * from food where dateAdded between ? and ?',(start,end,)).fetchall()
+    conn.close()
+    data = [tuple(row) for row in data]
+    return data
+
+
+
+# def getFoodByDay():
+#     conn = dbCheck()
+#     conn.row_factory = sqlite3.Row
+#     data = conn.execute('select * from food, grouped by ').fetchall()
+#     conn.close()
+#     return data
+
+# def getFoodByWeek():
+#     conn = dbCheck()
+#     conn.row_factory = sqlite3.Row
+#     data = conn.execute('select * from food, grouped by ').fetchall()
+#     conn.close()
+#     return data
+
+# def getFoodByMonth():
+#     conn = dbCheck()
+#     conn.row_factory = sqlite3.Row
+#     data = conn.execute('select * from food, grouped by ').fetchall()
+#     conn.close()
+#     return data
+
+# def getFoodByYear():
+#     conn = dbCheck()
+#     conn.row_factory = sqlite3.Row
+#     data = conn.execute('select * from food, grouped by ').fetchall()
+#     conn.close()
+#     return data
+
+
+
+
+
 
     
 

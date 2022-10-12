@@ -13,11 +13,13 @@ def createList(doc,arr):
         currEnt = doc.ents[i] # the current ent
         try: 
             nextEnt = doc.ents[i+1] # the next ent in order to check
-            if(currEnt.label_ == "CARDINAL") and nextEnt.label_ == "FOOD":
+            if(currEnt.label_ == "CARDINAL" or currEnt.label_ == "QUANTITY") and nextEnt.label_ == "FOOD":
                 i+=1
+                #if the number need to be changed from word to numbers, numerize will do it. otherwise itll save as its current state
                 arr.append([nextEnt.text,currEnt._.numerize()])
-            else:
-                if (currEnt.label_ == "FOOD"): 
+            else:   
+                #either the label is not cardinal/quantity or not food, if it just cardinal/quantity with no food item next we disregard it
+                if (currEnt.label_ == "FOOD"):  
                     arr.append([currEnt.text,1])
         except: 
             if (currEnt.label_ == "FOOD"): 
@@ -33,8 +35,11 @@ arr is the 2d list that should be useful for the database
   itll only look at cardinal and food
    and the format will be [[food,n],[food,n]] where food is the food item and n is the quantity
 '''
-
-#TODO: if time permits; maybe we can also look into weight inputs eg. 500 grams (ner.label_ = quantity)
+ 
+# need to look at both weights and quantity but the format should still be same 
+# in the speech its expected the speech is like " I ate QUANTITY/CARDINAL of FOOD  " 
+# like previously said if the speech is not amount followed by the food this will not pick up the amount
+# so in the for loop we just check if its either quantity or cardinal instead of just cardinal 
 
 def ner(text):
   nlp = spacy.load(nlpLoc)

@@ -1,9 +1,11 @@
-from flask import Flask, render_template,request
+from datetime import datetime
+from flask import Flask, jsonify, render_template,request
+from itsdangerous import json
 
 import SpeechToText as sp2Txt
 import NER as ner
 import database as db
-
+import nutrition
 
 
 app = Flask(__name__)
@@ -33,36 +35,68 @@ def record():
     return ("""<p>The following detected response has been added to the database</p>
     <p> Response:  """+ displacy) 
 
-data = [{'option':'daily'},
+#for daily we will have it for the past 5 days , for weekly; for the past 5 weeks , for monthly past 6 months and yearly is gonna be all possible years
+data = [{'option':'select option'},
+        {'option':'daily'},
         {'option':'weekly'},
         {'option':'monthly'},
         {'option':'Yearly'}]
 @app.route("/track")
 def track():
-    #TODO: finish this section of the site
-
-
-
+    
     return render_template("track.html",data=data)
 
-@app.route("/track", methods=['POST'])
+@app.route("/getGrouped", methods=['POST'])
 def getSelection():
-    selected = request.form.get('dateSelection')
+    selected = request.form.get('data').lower()
 
-    vals = db.getFood()
+    if(selected != "select option"):
+        if(selected == "daily"):
+            vals = db.getFood(0)
+        elif(selected == "weekly"):
+            vals = db.getFood(1)
+        elif selected == 'monthly':
+            vals = db.getFood(2)    
+        elif selected == "yearly":
+            vals = db.getFood(3)
+        
+    nutrition = getNutritionInfo(vals)
 
-    return render_template("track.html",data = data, items=vals)
+
+    #TODO: we need to create a combined json 
+    # where itll be like {"tables": vals , "nutrition": nutrition }
+    #and then return that json 
+    #TODO: refactor some of the Track.js so that the correct json part is being used
+    # the table will use "tables" and the charts will use "nutrition"
+
+    # https://stackoverflow.com/questions/2571702/return-multiple-values-in-jquery-ajax-call
+    #as ajax can only do  (values, status, ....)  we have to pass the two things as one json obj
+    # we cannot do return a, b => 
+    # instead we return a jsonobj called lets say "AjoinB"
+
+    return jsonify(vals),jsonify(nutrition)
+
+def getNutritionInfo(data):
+    nutri = nutrition(data)
+    
+    return nutri
+
+
 
 @app.route('/getDates', methods=['POST'])
 def getSelectionByDate():
     start = request.form.get('from')
     end = request.form.get('to')
+    
 
-    # get the data within this range from sql and then its returned via ajax
-    vals = db.getFoodByDateRange(start,end)
-
-    return "data sent"+start+" "+end
-    # return vals
+    return str(start),str(end)
+    #convert the string into the datetime format 
+    # as our datetime has no time itll default to 00:00
+    format = "%Y-%m-%d"
+    startDatObj,endDatObj = datetime.strptime(start,format) , datetime.strptime(end,format)
+    
+    vals = db.getFoodByDateRange(startDatObj,endDatObj)
+    return jsonify(vals)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -57,6 +57,8 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+<script rel="text/javascript" src="{{url_for('static',filename='js/track.js')}}" ></script>
+
 <h1> This is the Track page </h1>
 <p>
     Track your nutrition intake in this section
@@ -70,7 +72,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                         <option value="{{d.option}}">{{d.option}}</option>
                  {% endfor %}
             </select>
-            <button id="trackButton" type="submit" style="float:right; margin-top: 5px;" class="btn btn-primary">Submit</button>
+            <!-- <button id="trackButton" type="submit" style="float:right; margin-top: 5px;" class="btn btn-primary">Submit</button> -->
         </form>
 
     </div>
@@ -78,30 +80,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             <span> or select a date range </span>
             <input type="text" name="dateRange" value="" />    
         </form>
-
-    <div>
-
-    </div>
-
-    <script>
-        $(function(){
-            $('input[name="dateRange"]').daterangepicker({
-
-            }, function(start, end, label) {
-                $.ajax({
-                    type:"POST",
-                    url:"/getDates",
-                    data: {from:start.format('YYYY-MM-DD'),
-                            to:end.format('YYYY-MM-DD')}
-                }).done(function(data){
-                   alert(data)
-                });
-            });
-        });
-
-    </script>
-
-
 </div>
 
 <!-- TODO: this will render the charts for the user option -->
@@ -109,24 +87,20 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   
 </canvas>
 
-<!-- TODO: this will just return the table for the fetched data  -->
-<table name="userData" class="table table-striped">
+<script>
+</script>
+
+
+<!-- this will just return the table for the fetched data  -->
+<table id="userData" name="userData" class="table table-striped">
     <tr>
         <th>Food</th>
         <th>Quantity</th>
         <th>Date Added</th>
     </tr>
-    {% for i in items %}
-        <tr>
-            <td>{{i.foodItem}} </td>
-            <td>{{i.quantity}}</td>
-            <td>{{i.dateAdded }} </td>
-
-        </tr>
-    {% endfor %}
 
 </table>
     <script>
-        
-        </script> 
+
+    </script> 
 {% endblock %}
