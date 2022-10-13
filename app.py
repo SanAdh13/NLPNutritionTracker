@@ -39,8 +39,7 @@ def record():
 data = [{'option':'select option'},
         {'option':'daily'},
         {'option':'weekly'},
-        {'option':'monthly'},
-        {'option':'Yearly'}]
+        {'option':'monthly'}]
 @app.route("/track")
 def track():
     
@@ -52,15 +51,13 @@ def getSelection():
 
     if(selected != "select option"):
         if(selected == "daily"):
-            vals = db.getFood(0)
+            vals = db.getFood(5) #last 5 day
         elif(selected == "weekly"):
-            vals = db.getFood(1)
+            vals = db.getFood(3) #last 3 weeks
         elif selected == 'monthly':
             vals = db.getFood(2)    
-        elif selected == "yearly":
-            vals = db.getFood(3)
         
-    nutrition = getNutritionInfo(vals)
+    # nutri = nutrition.getNutrition(vals)
 
 
     #TODO: we need to create a combined json 
@@ -71,31 +68,29 @@ def getSelection():
 
     # https://stackoverflow.com/questions/2571702/return-multiple-values-in-jquery-ajax-call
     #as ajax can only do  (values, status, ....)  we have to pass the two things as one json obj
-    # we cannot do return a, b => 
-    # instead we return a jsonobj called lets say "AjoinB"
+    # we cannot do return a, b seperately => 
+    # instead we return a jsonobj with both a and b inside"
 
-    return jsonify(vals),jsonify(nutrition)
-
-def getNutritionInfo(data):
-    nutri = nutrition(data)
-    
-    return nutri
+    return jsonify(vals) #,jsonify(nutrition)
 
 
+
+def makeSingleJSON(a,b):
+    return 0
 
 @app.route('/getDates', methods=['POST'])
 def getSelectionByDate():
     start = request.form.get('from')
     end = request.form.get('to')
     
-
-    return str(start),str(end)
-    #convert the string into the datetime format 
-    # as our datetime has no time itll default to 00:00
+    # convert the string into the datetime format 
     format = "%Y-%m-%d"
     startDatObj,endDatObj = datetime.strptime(start,format) , datetime.strptime(end,format)
     
-    vals = db.getFoodByDateRange(startDatObj,endDatObj)
+    vals = db.getFoodByDateRange(startDatObj.date(),endDatObj.date())
+    
+    # nutri = nutrition.getNutrition(vals)
+    
     return jsonify(vals)
 
 if __name__ == "__main__":

@@ -53,8 +53,36 @@ $(function(){
             data: {data: data }
         })
         .done(function(returnedVal){
-            makeTable(returnedVal)
-            makeChart(returnedVal)
+            
+            // TODO: do the nutrition retrieval before this cause the JSON format will change again
+
+
+            console.log(returnedVal);
+
+            // this one is the first array which is the
+            returnedVal.forEach(timeframe => {
+                // in each timeframe theres 2 index 0: which is the date it corresponds to
+                // index 1: which is the array of arrays with the food and their quantities
+
+                console.log(timeframe);
+                // var n = (timeframe[0])
+                
+                // timeframe[1].forEach(food =>{
+                //     console.log( food[0] +" | "+food[1] +" | "+ n )
+                // });
+                
+
+                // e.forEach(Element => {
+                //     console.log(e)
+                    
+                // });
+                // console.log(e)
+            });
+
+            
+
+            // makeTable(returnedVal)
+            // makeChart(returnedVal)
         }); 
     }) 
 });
