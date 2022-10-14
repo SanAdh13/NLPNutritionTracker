@@ -16,16 +16,11 @@ def speech():
 	except Exception as e: 
 		return "Sorry I couldnt catch that"
 
-if __name__ == "__main__":
-	speech()
+# if __name__ == "__main__":
+# 	speech()
 
 
 
-
-
-# TODO: look into whisper ai hugging face transformer model ?
+# TODO: if time permits OpenAi whisper hugging face transformer model ?
 
 	
-
-
-

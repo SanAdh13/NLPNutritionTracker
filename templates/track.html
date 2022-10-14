@@ -17,7 +17,7 @@
                             data-bs-placement="top"
                             data-bs-custom-class="custom-tooltip"
                             data-bs-title="This option is disabled in this page."
-                            data-bs-toggle="tooltip" href="">Add Food</a>
+                            data-bs-toggle="tooltip" href="#">Add Food</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ url_for('track') }}">Track</a>
@@ -82,7 +82,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         </form>
 </div>
 
-<!-- TODO: this will render the charts for the user option -->
+<!-- this will render the charts for the user option -->
 <canvas id="myChart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
   
 </canvas>
@@ -100,7 +100,5 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     </tr>
 
 </table>
-    <script>
 
-    </script> 
 {% endblock %}

@@ -5,7 +5,6 @@ from itsdangerous import json
 import SpeechToText as sp2Txt
 import NER as ner
 import database as db
-import nutrition
 
 
 app = Flask(__name__)
@@ -42,13 +41,13 @@ data = [{'option':'select option'},
         {'option':'monthly'}]
 @app.route("/track")
 def track():
-    
     return render_template("track.html",data=data)
 
 @app.route("/getGrouped", methods=['POST'])
 def getSelection():
     selected = request.form.get('data').lower()
 
+    vals = 0
     if(selected != "select option"):
         if(selected == "daily"):
             vals = db.getFood(5) #last 5 day
@@ -56,27 +55,7 @@ def getSelection():
             vals = db.getFood(3) #last 3 weeks
         elif selected == 'monthly':
             vals = db.getFood(2)    
-        
-    # nutri = nutrition.getNutrition(vals)
-
-
-    #TODO: we need to create a combined json 
-    # where itll be like {"tables": vals , "nutrition": nutrition }
-    #and then return that json 
-    #TODO: refactor some of the Track.js so that the correct json part is being used
-    # the table will use "tables" and the charts will use "nutrition"
-
-    # https://stackoverflow.com/questions/2571702/return-multiple-values-in-jquery-ajax-call
-    #as ajax can only do  (values, status, ....)  we have to pass the two things as one json obj
-    # we cannot do return a, b seperately => 
-    # instead we return a jsonobj with both a and b inside"
-
-    return jsonify(vals) #,jsonify(nutrition)
-
-
-
-def makeSingleJSON(a,b):
-    return 0
+    return jsonify(vals)
 
 @app.route('/getDates', methods=['POST'])
 def getSelectionByDate():
@@ -88,8 +67,6 @@ def getSelectionByDate():
     startDatObj,endDatObj = datetime.strptime(start,format) , datetime.strptime(end,format)
     
     vals = db.getFoodByDateRange(startDatObj.date(),endDatObj.date())
-    
-    # nutri = nutrition.getNutrition(vals)
     
     return jsonify(vals)
 

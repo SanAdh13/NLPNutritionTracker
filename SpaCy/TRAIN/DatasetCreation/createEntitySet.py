@@ -31,7 +31,6 @@ def toJSON(dict):
 
 
 def entity():
-    #TODO: add more values to the template
     templates = [ 
         " Today i ate {} ",
         "For lunch i had {} , {} and {} ",
