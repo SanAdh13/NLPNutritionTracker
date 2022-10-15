@@ -57,6 +57,9 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+<!-- https://www.chartjs.org/ -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
 <script rel="text/javascript" src="{{url_for('static',filename='js/track.js')}}" ></script>
 
 <h1> This is the Track page </h1>
@@ -83,9 +86,17 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 </div>
 
 <!-- this will render the charts for the user option -->
-<canvas id="myChart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
+
+<div>
+    <canvas id="Nutritionlinechart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
   
-</canvas>
+    </canvas>
+
+    <canvas id="NutritionPieChart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
+    
+    </canvas>
+</div>
+
 
 <script>
 </script>

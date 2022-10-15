@@ -53,7 +53,7 @@ def getFood(num):
             #IF i pass the data here and then i can append that arraylist to the end
             nutrition = getNutrition(data)
 
-            date = [str(startWeek)+" to "+str(endofWeek)]
+            date = str(startWeek)+" to "+str(endofWeek)
             dataList.append((data,nutrition,date))
             #go back a week, update the bounds to show start and end of that week 
             startWeek, endofWeek = startWeek - datetime.timedelta(days=7) , startWeek - datetime.timedelta(days=1)
