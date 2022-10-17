@@ -24,6 +24,11 @@
                     </li>
                     </ul>
                     </div>
+                    <ul class="nav justify-content-end me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                          <a class="nav-link link-danger active" aria-current="page" href="{{url_for('delUser')}}">Delete Data</a>
+                        </li>
+                      </ul>
                 </div>
             </nav>
         </div>
@@ -87,20 +92,15 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 
 <!-- this will render the charts for the user option -->
 
-<div>
-    <canvas id="Nutritionlinechart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
+<div id="mycharts">
+    <canvas id="Nutritionlinechart" style="outline:  light gray 1px solid;" class="my-4 w-100 chartjs-render-monitor">
   
     </canvas>
 
-    <canvas id="NutritionPieChart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
+    <!-- <canvas id="NutritionPieChart" style="outline: black 2px solid;" class="my-4 w-100 chartjs-render-monitor">
     
-    </canvas>
+    </canvas> -->
 </div>
-
-
-<script>
-</script>
-
 
 <!-- this will just return the table for the fetched data  -->
 <table id="userData" name="userData" class="table table-striped">

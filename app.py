@@ -20,11 +20,11 @@ def index():
 @app.route("/save",methods=['POST'])
 def record():
     f = request.files['audio_data']
-    with open('temp/audio.wav','wb') as audio:
-        f.save(audio)
+    # with open('temp/audio.wav','wb') as audio:
+    #     f.save(audio)
 
     #pass the audio recording to speech2text to convert to text
-    text = sp2Txt.speech()
+    text = sp2Txt.speech(f)
 
     # we use the text gained on the ner model we have and return 
     displacy, dataForDB = ner.ner(text)
@@ -70,5 +70,13 @@ def getSelectionByDate():
     
     return jsonify(vals)
 
+
+
+@app.route('/deleteUser')
+def delUser():
+    db.deleteUserData() 
+    return render_template("index.html")
+
+  
 if __name__ == "__main__":
     app.run(debug=True)

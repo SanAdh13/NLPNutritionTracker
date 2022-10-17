@@ -5,9 +5,10 @@
 import speech_recognition as sr
 
 r = sr.Recognizer()
-def speech():
+def speech(f):
 	try:
-		with sr.AudioFile('temp/audio.wav') as source:
+		# with sr.AudioFile('temp/audio.wav') as source:
+		with sr.AudioFile(f) as source:
 			# r.adjust_for_ambient_noise(source)
 			audio2 = r.record(source)
 			text = r.recognize_google(audio2)

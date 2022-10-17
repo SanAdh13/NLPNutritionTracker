@@ -28,7 +28,6 @@ def addToFoodTable(spacyResultArr):
 
 def getFood(num):
     conn = dbCheck()
-    # conn.row_factory = sqlite3.Row
     conn.row_factory = lambda cursor, row : row[0:3]
     c = conn.cursor()
     d = datetime.date.today() 
@@ -40,9 +39,7 @@ def getFood(num):
             data = c.execute("select fooditem,quantity,dateAdded from food where dateAdded = ?",(d,)).fetchall()
             # data = [tuple(row) for row in data]
             nutrition = getNutrition(data)
-
             ylabel = str(d.year)+"-"+str(d.month)+"-"+str(d.day)
-
             dataList.append((data,nutrition,ylabel))
             d = d - datetime.timedelta(days = 1)
     elif(num == 3):
@@ -60,14 +57,10 @@ def getFood(num):
 
     elif(num == 2):
         d = datetime.date.today() 
-        # d = 
         for _ in range(num): 
             month = str(d.year)+"-"+"%02d"%d.month
-            # dateMonth=(str(d.year)+"-"+str(d.month))
             data = c.execute('select fooditem,quantity,dateAdded from food where strftime("%Y-%m",dateAdded) = ?',(month,)).fetchall()
-            # data = c.execute("select fooditem,quantity,dateAdded from food where strftime('%Y-%m',dateAdded) = ?",(d,) ).fetchall()
             nutrition = getNutrition(data)
-            # dateMonth=(str(d.year)+"-"+str(d.month))
             dataList.append((data,nutrition,month))
             d = d.replace(month=d.month - 1 )
     conn.close()
@@ -75,7 +68,6 @@ def getFood(num):
 
 
 def getFoodByDateRange(start,end ):
-
     #Same as get daily select option but this is for the selected amount of days 
     conn = dbCheck()
     conn.row_factory = lambda cursor, row : row[0:3]
@@ -83,11 +75,11 @@ def getFoodByDateRange(start,end ):
     dataList= []    
     noOfDays = (end - start).days
     for _ in range(noOfDays+1):
-        data = c.execute("select fooditem,quantity,dateAdded from food where dateAdded = ?",(start,)).fetchall()
+        data = c.execute("select fooditem,quantity,dateAdded from food where dateAdded = ?",(end,)).fetchall()
         nutrition = getNutrition(data)
-        ylabel = str(start.year)+"-"+str(start.month)+"-"+str(start.day)
+        ylabel = str(end.year)+"-"+str(end.month)+"-"+str(end.day)
         dataList.append((data,nutrition,ylabel))
-        start = start + datetime.timedelta(days = 1)
+        end = end - datetime.timedelta(days = 1)
     conn.close()
     return dataList
 
@@ -131,10 +123,10 @@ def getNutrition(data):
         #
         query = createQuery(food)
 
-        nutriData = conn.execute(query).fetchall()   
+        nutriData = conn.execute(query).fetchall()  
         try:
-            nutriData = nutriData[0]
-            values = nutriData[2:]
+            nutriData = nutriData[0] #Just selecting the first resutl that was returned
+            values = nutriData[2:] #this gets all the values except the first 2 cols which are index and food name 
             for i in range(9):
                 nutritionArray[i]+=(float(values[i]) * float(quantity))  
         except:
@@ -142,39 +134,17 @@ def getNutrition(data):
 
     return nutritionArray
 
-# def test(x):
-#     conn = dbCheck()
-#     conn.row_factory = lambda cursor, row : row[0:3]
-#     c = conn.cursor()
-
-#     d= datetime.date.today()
-
-#     data = c.execute('select fooditem,quantity,dateAdded from food where strftime("%Y-%m",dateAdded) = ?',(x,)).fetchall()
-#             # data = [tuple(row) for row in data]
-#     print(data)
-#             #IF i pass the data here and then i can append that arraylist to the end
-    
-
-        
+def deleteUserData():
+    conn = dbCheck()
+    cur = conn.cursor()
+    query = "Drop table if exists food"
+    cur.execute(query)
+    conn.commit()
+    cur.close()
+    conn.close()
+    print("deleteReached")
 
 
-# if __name__ == "__main__":
-
-    # date = "2022-09-09"
-    # format = "%Y-%m-%d"
-    # date = datetime.datetime.strptime(date,format)
-
-    # # print(date)
-
-    # # d = datetime.date.today()
-    # month = str(date.year)+"-"+"%02d" %date.month
-    # print(month)
-
-    # print(month)
-    # print(date.strftime("%Y-%m-%d"))
-    # print(test(month))
-
-    # print(getFood(2))
 
 
  

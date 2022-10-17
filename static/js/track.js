@@ -1,21 +1,21 @@
+columns = ['Water (g)','Total nitrogen (g)','Protein (g)', 'Fat (g)','Carbohydrate (g)', 'Energy (kcal)','Total sugars (g)','Alcohol (g)','fibre (g)']
+
 function makeRawDataTable(data){
     var tableData = '';
     data.forEach(element => { 
-        // console.log("x",element)
         tableData += "<tr>";
         tableData += "<td>"+element[0]+'</td>';
         tableData += "<td>"+element[1]+'</td>';
         tableData += "<td>"+element[2]+'</td>';
         tableData += "</tr>"; 
     })
-    // clear the table before adding the new data 
-    // $("#userData  tr").slice(1).remove();
     $('#userData').append(tableData)
 }
 
-function makeChart(values,l) {
+function makeChart(values,lbl) {
 
-
+    
+    console.log("v", values);
     // right now we have Tx9 sized array
     // want 2D array where each nutrient = 9xT size array 
 
@@ -27,74 +27,71 @@ function makeChart(values,l) {
             formattedArray[i].push(val[i])
         })
     }
-
-    console.log(formattedArray)
     
     var canvas = $('#Nutritionlinechart');
-
     linechart = new Chart(canvas,{
         type:'line',
         data:{
-            labels: l,
+            labels: lbl,
             datasets: [
             {
-                label : 'Nutrient0',
+                label : columns[0],
                 data : formattedArray[0],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "red"
             },
             {
-                label : 'Nutrient1',
+                label : columns[1],
                 data : formattedArray[1],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "blue"
             },
             {
-                label : 'Nutrient2',
+                label : columns[2],
                 data : formattedArray[2],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "green"
             },
             {
-                label : 'Nutrient3',
+                label : columns[3],
                 data : formattedArray[3],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "black"
             },
             {
-                label : 'Nutrient4',
+                label : columns[4],
                 data : formattedArray[4],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "pink"
             },
             {
-                label : 'Nutrient5',
+                label : columns[5],
                 data : formattedArray[5],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "orange"
             },
             {
-                label : 'Nutrient6',
+                label : columns[6],
                 data : formattedArray[6],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "light gray"
             },
             {
-                label : 'Nutrient7',
+                label : columns[7],
                 data : formattedArray[7],
                 borderwidth : 1,
                 fill : false,
                 borderColor : "light green"
             },
             {
-                label : 'Nutrient8',
+                label : columns[8],
                 data : formattedArray[8],
                 borderwidth : 1,
                 fill : false,
@@ -104,32 +101,32 @@ function makeChart(values,l) {
         }
     });
     
+ 
+    var table = "<table id='nutriTable' class='table table-striped'>";
+    table += "<tr><th>Date</th>"
+    columns.forEach(cols => {
+        table+="<th>"+cols+"</th>";
+    })
+    table += "</tr>";
 
-    //TODO: need to figure out the way im gonna visualise this pie chart
-    
-    // I can either have 9 pie charts; each chart is one of the nutirent and each section is the timeframe 
-    // for above use formattedArray
-    // or i can have T amount pie charts; with 9 segments, each segment is one of the datatype 
-    // for this use original Array
-
-
-    var canvas1 = $('#NutritionPieChart');
-    piechart = new Chart(canvas1,{
-        type:'pie',
-        data:{
-            labels: l,
-            datasets: [
-                
-            ]
+    console.log('v', values[0].slice(1,8));
+    for (let index = 0; index < lbl.length; index++) {
+        table+="<tr><td>"
+        table+= lbl[index]
+        table+="</td>"
+ 
+        for(var j = 0 ; j < 9 ; j++){
+            table+="<td>"
+            table+=Number(parseFloat(values[index][j]).toFixed(2))
+            table+="</td>"
         }
-    });
+        table+="</tr>"  
+    }
+    table+='</table>'
+
+    $(mycharts).append(table)
 
 
-    //TODO above the rawdatatable 
-    // have a table that shows raw nutrition data for each timeframe 
-    //          |Timeframe1 | ....  | TimeframeN    |
-    //nutrition1|   TN      |   TN  |       TN      |
-    //nutritionn|   TN      |   TN  |       TN      |
 }
 
 
@@ -143,21 +140,27 @@ function vals(v){
     var labels = [] //T size array with the date labels
     
     v.forEach(timeframe => {
-        // console.log("nutri",timeframe[1]);
-        // console.log("label",timeframe[2]);
         makeRawDataTable(timeframe[0]);
-        // forTableData.push(timeframe[0]);
-        nutritionData.push(timeframe[1]);
-        labels.push(timeframe[2]);  
+        nutritionData.unshift(timeframe[1]);
+        labels.unshift(timeframe[2]);  
 
     });
-
-    // console.log("Table",forTableData)  
     makeChart(nutritionData,labels)
 }    
 
 var linechart;
 var piechart;
+function cleanup(){
+    // clearing the charts & tables if it already exists
+    if(linechart != null){
+        linechart.destroy()
+    };
+    if(piechart != null){
+        piechart.destroy()
+    }; 
+    $('#nutriTable').remove()
+    $("#userData  tr").slice(1).remove();
+}
 
 $(function(){
     $('input[name="dateRange"]').daterangepicker({
@@ -170,18 +173,14 @@ $(function(){
             url:"/getDates",
             data: {from:start.format('YYYY-MM-DD'),
                     to:end.format('YYYY-MM-DD')}
-        }).done(function(values){
-            if(linechart != null){
-                linechart.destroy()
-            };
-            if(piechart != null){
-                piechart.destroy()
-            };
-            $("#userData  tr").slice(1).remove();
+        }).done(function(values){ 
+
+            cleanup()
             vals(values)
         });
     });
 });
+
 
 $(function(){
     $("#dateSelection").change(function(){
@@ -193,13 +192,7 @@ $(function(){
             data: {data: data }
         })
         .done(function(returnedVal){
-            if(linechart != null){
-                linechart.destroy()
-            };
-            if(piechart != null){
-                piechart.destroy()
-            };
-            $("#userData  tr").slice(1).remove();
+            cleanup()
             vals(returnedVal)
         }); 
     }) 

@@ -32,7 +32,7 @@ def toJSON(dict):
 
 def entity():
     templates = [ 
-        " Today i ate {} ",
+        "Today i ate {} ",
         "For lunch i had {} , {} and {} ",
         "I decided to have a portion of {} ,and some {} ",
         "I had {} and {} for breakfast",
@@ -66,7 +66,7 @@ def entity():
         entities = []
 
         pickedTemplate = templates[random.randint(0,len(templates)-1)]
-        replacementCount = re.findall("{}",pickedTemplate)
+        replacementCount = re.findall("{}",pickedTemplate) #the replace mask for the food is {}
 
 
         for x in replacementCount:
@@ -83,7 +83,7 @@ def entity():
 
     toJSON(foodEntity)
 
-if __name__ == "__main__":
-    entity()
+# if __name__ == "__main__":
+#     entity()
 
 

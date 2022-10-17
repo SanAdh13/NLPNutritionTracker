@@ -42,12 +42,6 @@ def dataset():
    foodThree = cleanedData[cleanedData.str.split().apply(len) == 3] #26041 
    foodFour = cleanedData[cleanedData.str.split().apply(len) == 4] #22814
 
-   # print(foodOne.shape)
-   # print(foodtwo.shape)
-   # print(foodThree.shape)
-   # print(foodFour.shape)
-
-
    foodOne = foodOne.sample(frac=1)
    foodtwo = foodtwo.sample(n=3000)
    foodThree = foodThree.sample(n=2000)
